@@ -66,7 +66,7 @@ GNOME_PACKAGES = @GNOME_PACKAGES@
 GNOME_CFLAGS = @GNOME_CFLAGS@
 GNOME_LIBS = @GNOME_LIBS@
 
-LIBS = @LIBS@
+LIBS = @LIBS@ -Ltarget/debug -ldistcc_rs
 
 DESTDIR =
 
@@ -248,7 +248,6 @@ common_obj = src/arg.o src/argutil.o					\
 	src/hosts.o src/hostfile.o					\
 	src/implicit.o src/loadfile.o					\
 	lzo/minilzo.o                                                   \
-	target/debug/libdistcc_rs.a					\
 	@ZEROCONF_COMMON_OBJS@						\
 	@AUTH_COMMON_OBJS@
 
