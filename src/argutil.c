@@ -67,15 +67,6 @@ int dcc_argv_startswith(char **a,
     return 0;
 }
 
-unsigned int dcc_argv_len(char **a)
-{
-    unsigned int i;
-
-    for (i = 0; a[i]; i++)
-        ;
-    return i;
-}
-
 
 /* Copy an argv array, adding extra NULL elements to the end to allow for
  * adding more arguments later.
@@ -85,7 +76,7 @@ int dcc_copy_argv(char **from, char ***out, int delta)
     char **b;
     int l, i, k;
 
-    l = dcc_argv_len(from);
+    l = argv_len(from);
     b = malloc((l+1+delta) * (sizeof from[0]));
     if (b == NULL) {
         rs_log_error("failed to allocate copy of argv");

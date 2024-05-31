@@ -112,7 +112,7 @@ int dcc_talk_to_include_server(char **argv, char ***files)
         return 1;
     }
 
-    if (dcc_argv_len(*files) == 0) {
+    if (argv_len(*files) == 0) {
         rs_log_warning("include server gave up analyzing");
         return 1;
     }

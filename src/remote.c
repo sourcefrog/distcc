@@ -251,7 +251,7 @@ int dcc_compile_remote(char **argv,
           goto out;
         }
 
-        n_files = dcc_argv_len(files);
+        n_files = argv_len(files);
         if ((ret = dcc_x_many_files(to_net_fd, n_files, files))) {
             goto out;
         }

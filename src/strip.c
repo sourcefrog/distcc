@@ -68,7 +68,7 @@ int dcc_strip_local_args(char **from, char ***out_argv)
     int from_i, to_i;
     int from_len;
 
-    from_len = dcc_argv_len(from);
+    from_len = argv_len(from);
     *out_argv = to = malloc((from_len + 1) * sizeof (char *));
 
     if (!to) {
@@ -154,7 +154,7 @@ int dcc_strip_dasho(char **from, char ***out_argv)
     int from_i, to_i;
     int from_len;
 
-    from_len = dcc_argv_len(from);
+    from_len = argv_len(from);
     *out_argv = to = malloc((from_len + 1) * sizeof (char *));
 
     if (!to) {

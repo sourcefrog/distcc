@@ -76,7 +76,7 @@ int dcc_x_argv(int fd,
     int ret;
     int argc;
 
-    argc = dcc_argv_len(argv);
+    argc = argv_len(argv);
 
     if (dcc_x_token_int(fd, argc_token, (unsigned) argc))
         return EXIT_PROTOCOL_ERROR;

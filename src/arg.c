@@ -93,7 +93,7 @@
 
 int dcc_argv_append(char **argv, char *toadd)
 {
-    int l = dcc_argv_len(argv);
+    int l = argv_len(argv);
     argv[l] = toadd;
     argv[l+1] = NULL;           /* just make sure */
     return 0;
@@ -503,7 +503,7 @@ int dcc_expand_preprocessor_options(char ***argv_ptr) {
     int i, j, ret;
     char **argv = *argv_ptr;
     char **new_argv;
-    int argc = dcc_argv_len(argv);
+    int argc = argv_len(argv);
     for (i = 0; argv[i]; i++) {
         if (str_startswith("-Wp,", argv[i])) {
             /* First, calculate how many extra arguments we'll need. */
