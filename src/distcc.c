@@ -242,8 +242,6 @@ int main(int argc, char **argv)
 
     dcc_trace_version();
 
-    hello_rs();
-
 #if HAVE_LIBIBERTY
     /* Expand @FILE arguments. */
     expandargv(&argc, &argv);
