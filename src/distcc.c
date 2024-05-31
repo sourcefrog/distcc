@@ -355,7 +355,7 @@ int main(int argc, char **argv)
 
     out:
     if (compiler_args) {
-      dcc_free_argv(compiler_args);
+      free_argv(compiler_args);
     }
     dcc_maybe_send_email();
     dcc_exit(ret);

@@ -722,7 +722,7 @@ dcc_build_somewhere(char *argv[],
     /* FIXME: this may leak memory for argv. */
 
     ret = dcc_scan_args(argv, &input_fname, &output_fname, &new_argv);
-    dcc_free_argv(argv);
+    free_argv(argv);
     argv = new_argv;
     if (!getenv("DISTCC_NO_REWRITE_CROSS")) {
 #ifdef HAVE_FSTATAT
@@ -999,10 +999,10 @@ dcc_build_somewhere(char *argv[],
     }
 
   clean_up:
-    dcc_free_argv(argv);
+    free_argv(argv);
     if (server_side_argv_deep_copied) {
         if (server_side_argv != NULL) {
-          dcc_free_argv(server_side_argv);
+          free_argv(server_side_argv);
         }
     } else {
         free(server_side_argv);

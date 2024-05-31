@@ -724,7 +724,7 @@ static int dcc_run_job(int in_fd,
 
     /* Our new argv is what dcc_scan_args put into tweaked_argv */
     /* Put tweaked_argv into argv, and free old argv */
-    dcc_free_argv(argv);
+    free_argv(argv);
     argv = tweaked_argv;
     tweaked_argv = NULL;
 
@@ -742,7 +742,7 @@ static int dcc_run_job(int in_fd,
                                           &dotd_target, &tweaked_argv))
             goto out_cleanup;
         /* Repeat the switcharoo trick a few lines above. */
-        dcc_free_argv(argv);
+        free_argv(argv);
         argv = tweaked_argv;
         tweaked_argv = NULL;
     } else {
@@ -906,9 +906,9 @@ out_cleanup:
     free(orig_output);
 
     if (argv)
-        dcc_free_argv(argv);
+        free_argv(argv);
     if (tweaked_argv)
-        dcc_free_argv(tweaked_argv);
+        free_argv(tweaked_argv);
 
     free(temp_dir);
     free(temp_i);

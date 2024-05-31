@@ -66,7 +66,8 @@ pub unsafe fn argv_to_vec(argv: *mut *mut c_char) -> Vec<String> {
 /// # Safety
 ///
 /// `argv` must point to a malloced array of pointers to malloced strings, terminated by a null.
-pub unsafe fn free_argv(argv: *mut *mut c_char) {
+#[no_mangle]
+pub unsafe extern "C" fn free_argv(argv: *mut *mut c_char) {
     unsafe {
         for i in 0.. {
             let arg = *argv.add(i);
