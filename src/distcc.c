@@ -52,6 +52,7 @@
 #endif
 
 #include "distcc.h"
+#include "distcc_rs.h"
 #include "trace.h"
 #include "exitcode.h"
 #include "util.h"
@@ -240,6 +241,8 @@ int main(int argc, char **argv)
     dcc_setup_log_email();
 
     dcc_trace_version();
+
+    hello_rs();
 
 #if HAVE_LIBIBERTY
     /* Expand @FILE arguments. */
