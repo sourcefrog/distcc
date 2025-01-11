@@ -45,64 +45,65 @@ OPTIONS_NOT_ALLOWED = ['-Iquote', '-Isystem', '-I-']
 
 
 def GetIncludes(flags):
-  """Parse a flags string for includes of the form -I<DIR>.
+    """Parse a flags string for includes of the form -I<DIR>.
 
-  Args:
-    flags: a string in shell syntax denoting compiler options
-  Returns:
-    a list of <DIR>s of the includes
-  Raises:
-    ValueError:
+    Args:
+      flags: a string in shell syntax denoting compiler options
+    Returns:
+      a list of <DIR>s of the includes
+    Raises:
+      ValueError:
 
-  In the doctests below, note that a single quoted backslash takes four
-  backslashes to represent if it is inside a single quoted string inside this
-  present triple-quoted string.
+    In the doctests below, note that a single quoted backslash takes four
+    backslashes to represent if it is inside a single quoted string inside this
+    present triple-quoted string.
 
-  >>> GetIncludes('-I x -X -I"y" -Y')
-  ['x', 'y']
-  >>> GetIncludes('-Ix -Dfoo -Iy')
-  ['x', 'y']
-  >>> GetIncludes(r'-Ix -I"y\\z" -I"y\\\\z" -Y')
-  ['x', 'y\\\\z', 'y\\\\z']
-  >>> GetIncludes('-DX -Iquote Y')
-  Traceback (most recent call last):
-        ...
-  ValueError: These options are not allowed: -Iquote, -Isystem, -I-.
-  >>> GetIncludes('-DX -I x -I')
-  Traceback (most recent call last):
-        ...
-  ValueError: Argument expected after '-I'.
-  """
-  flags = shlex.split(flags)
-  if set(OPTIONS_NOT_ALLOWED) & set(flags):
-    raise ValueError('These options are not allowed: %s.'
-                     % ', '.join(OPTIONS_NOT_ALLOWED))
-  # Fish out the directories of '-I' options.
-  i = 0
-  inc_dirs = []
-  while i < len(flags):
-    if flags[i].startswith('-I'):
-      inc_dir = flags[i][len('-I'):]
-      if inc_dir:
-        # "-Idir"
-        inc_dirs.append(inc_dir)
-        i += 1
-        continue
-      else:
-        # "-I dir"
-        if i == len(flags) - 1:
-          raise ValueError("Argument expected after '-I'.")
-        inc_dirs.append(flags[i+1])
-        i += 2
-    else:
-      i += 1
-  return inc_dirs
+    >>> GetIncludes('-I x -X -I"y" -Y')
+    ['x', 'y']
+    >>> GetIncludes('-Ix -Dfoo -Iy')
+    ['x', 'y']
+    >>> GetIncludes(r'-Ix -I"y\\z" -I"y\\\\z" -Y')
+    ['x', 'y\\\\z', 'y\\\\z']
+    >>> GetIncludes('-DX -Iquote Y')
+    Traceback (most recent call last):
+          ...
+    ValueError: These options are not allowed: -Iquote, -Isystem, -I-.
+    >>> GetIncludes('-DX -I x -I')
+    Traceback (most recent call last):
+          ...
+    ValueError: Argument expected after '-I'.
+    """
+    flags = shlex.split(flags)
+    if set(OPTIONS_NOT_ALLOWED) & set(flags):
+        raise ValueError('These options are not allowed: %s.'
+                         % ', '.join(OPTIONS_NOT_ALLOWED))
+    # Fish out the directories of '-I' options.
+    i = 0
+    inc_dirs = []
+    while i < len(flags):
+        if flags[i].startswith('-I'):
+            inc_dir = flags[i][len('-I'):]
+            if inc_dir:
+                # "-Idir"
+                inc_dirs.append(inc_dir)
+                i += 1
+                continue
+            else:
+                # "-I dir"
+                if i == len(flags) - 1:
+                    raise ValueError("Argument expected after '-I'.")
+                inc_dirs.append(flags[i+1])
+                i += 2
+        else:
+            i += 1
+    return inc_dirs
+
 
 cpp_flags_env = os.getenv('CPPFLAGS', '')
 if not cpp_flags_env:
-  # Don't quit; perhaps the user is asking for help using '--help'.
-  # CPPFLAGS checking.
-  print('setup.py: CPPFLAGS must be defined.', sys.stderr)
+    # Don't quit; perhaps the user is asking for help using '--help'.
+    # CPPFLAGS checking.
+    print('setup.py: CPPFLAGS must be defined.', sys.stderr)
 # CPPFLAGS is passed to us as it's used in the Makefile: a string that the shell
 # will interpret.  GetInclude uses shlex to do the same kind of interpretation
 # in order to identify the include directory options.
@@ -110,19 +111,19 @@ cpp_flags_includes = GetIncludes(cpp_flags_env)
 
 # SRCDIR checking.
 if not os.getenv('SRCDIR'):
-  # Don't quit; perhaps the user is asking for help using '--help'.
-  print('setup.py: SRCDIR must be defined.', sys.stderr)
-  srcdir = 'UNDEFINED'
-  srcdir_include_server = 'UNDEFINED'
+    # Don't quit; perhaps the user is asking for help using '--help'.
+    print('setup.py: SRCDIR must be defined.', sys.stderr)
+    srcdir = 'UNDEFINED'
+    srcdir_include_server = 'UNDEFINED'
 else:
-  # The distutils build system appends the source location to the build
-  # location, and so to avoid that relative source paths with '..' make built
-  # files end up outside the build location, the location is changed to an
-  # absolute path.
-  srcdir = os.path.abspath(os.getenv('SRCDIR'))
-  if not os.path.isdir(srcdir):
-    sys.exit("""Could not cd to SRCDIR '%s'.""" % srcdir)
-  srcdir_include_server = os.path.join(srcdir, 'include_server')
+    # The distutils build system appends the source location to the build
+    # location, and so to avoid that relative source paths with '..' make built
+    # files end up outside the build location, the location is changed to an
+    # absolute path.
+    srcdir = os.path.abspath(os.getenv('SRCDIR'))
+    if not os.path.isdir(srcdir):
+        sys.exit("""Could not cd to SRCDIR '%s'.""" % srcdir)
+    srcdir_include_server = os.path.join(srcdir, 'include_server')
 
 # Specify extension.
 ext = setuptools.Extension(
@@ -152,15 +153,14 @@ ext = setuptools.Extension(
               'src/netutil.c',
               'lzo/minilzo.c',
               'include_server/c_extensions/distcc_pump_c_extensions_module.c',
-             ]],
+              ]],
     include_dirs=cpp_flags_includes,
     define_macros=[('_GNU_SOURCE', 1)],
-    library_dirs=['target/debug'],
     libraries=['distcc_rs'],
     runtime_library_dirs=[],
     extra_objects=[],
     extra_compile_args=[]
-    )
+)
 
 args = {
     'name': 'include_server',
